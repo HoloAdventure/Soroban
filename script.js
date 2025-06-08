@@ -2,8 +2,8 @@
 class SorobanGame {
     constructor() {
         this.settings = {
-            problems: 1,
-            digits: 2,
+            problems: 3,
+            digits: 1,
             operations: 2,
             type: 'addition'
         };
@@ -109,7 +109,7 @@ class SorobanGame {
         }
 
         this.calculateAbacusValue();
-    }    calculateAbacusValue() {
+    } calculateAbacusValue() {
         let total = 0;
         const columns = document.querySelectorAll('.abacus-column');
 
@@ -126,8 +126,8 @@ class SorobanGame {
             // 地珠の値
             const activeEarthBeads = column.querySelectorAll('.earth-bead.active').length;
             total += activeEarthBeads * placeValue;
-        });        this.gameState.abacusValue = total;
-        
+        }); this.gameState.abacusValue = total;
+
         // 自動正解判定
         this.checkAutoAnswer();
     }
@@ -412,12 +412,10 @@ class SorobanGame {
             'mixed': '掛け算'
         };
         document.getElementById('display-type').textContent = typeText[this.settings.type];
-    }
-
-    resetToDefault() {
+    } resetToDefault() {
         this.settings = {
-            problems: 1,
-            digits: 2,
+            problems: 3,
+            digits: 1,
             operations: 2,
             type: 'addition'
         };
