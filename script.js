@@ -109,9 +109,7 @@ class SorobanGame {
         }
 
         this.calculateAbacusValue();
-    }
-
-    calculateAbacusValue() {
+    }    calculateAbacusValue() {
         let total = 0;
         const columns = document.querySelectorAll('.abacus-column');
 
@@ -128,9 +126,46 @@ class SorobanGame {
             // 地珠の値
             const activeEarthBeads = column.querySelectorAll('.earth-bead.active').length;
             total += activeEarthBeads * placeValue;
-        });
+        });        this.gameState.abacusValue = total;
+        
+        // 自動正解判定
+        this.checkAutoAnswer();
+    }
 
-        this.gameState.abacusValue = total;
+    checkAutoAnswer() {
+        // ゲーム中でない場合は判定しない
+        if (!this.gameState.startTime || !this.gameState.problems.length) {
+            return;
+        }
+
+        const problem = this.gameState.problems[this.gameState.currentProblem];
+        const feedback = document.getElementById('feedback');
+        const checkButton = document.getElementById('check-answer');
+
+        // 正解と一致した場合
+        if (this.gameState.abacusValue === problem.answer) {
+            // すでに正解判定済みの場合は処理しない
+            if (checkButton.disabled) {
+                return;
+            }
+
+            feedback.textContent = '正解！';
+            feedback.className = 'feedback correct';
+
+            // 答えを表示
+            const equationElement = document.getElementById('current-equation');
+            const currentText = equationElement.innerHTML;
+            const answerText = currentText.replace('?', `<span class="correct">${problem.answer}</span>`);
+            equationElement.innerHTML = answerText;
+
+            // ボタンを無効化
+            checkButton.disabled = true;
+
+            // 自動で次の問題に進む
+            setTimeout(() => {
+                this.nextProblem();
+            }, 2000);
+        }
     }
 
     generateProblems() {
