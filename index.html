@@ -8,19 +8,33 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
-    <!-- タイトル画面 -->
+<body> <!-- タイトル画面 -->
     <div id="title-screen" class="screen active">
         <h1 class="title">そろばん</h1>
         <div class="button-container">
             <button id="start-btn" class="main-button">スタート</button>
             <button id="customize-btn" class="main-button">カスタマイズ</button>
         </div>
-        <div id="settings-display" class="settings-display">
-            問題数: <span id="display-problems">1</span>,
-            桁数: <span id="display-digits">1</span>,
-            計算回数: <span id="display-operations">2</span>,
-            計算式: <span id="display-type">足し算</span>
+        <div class="title-settings-info">
+            <h3>現在の設定</h3>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <span class="setting-label">問題数:</span>
+                    <span id="display-problems" class="setting-value">3</span>問
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">桁数:</span>
+                    <span id="display-digits" class="setting-value">1</span>桁
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">計算回数:</span>
+                    <span id="display-operations" class="setting-value">2</span>回
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">計算式:</span>
+                    <span id="display-type" class="setting-value">足し算</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -141,21 +155,18 @@
                 <label>問題数</label>
                 <div class="setting-control">
                     <input type="number" id="problems-setting" min="1" max="10" value="1">
-                    <button class="setting-btn" onclick="changeSetting('problems', -1)">▼</button>
                 </div>
             </div>
             <div class="setting-row">
                 <label>桁数</label>
                 <div class="setting-control">
                     <input type="number" id="digits-setting" min="1" max="3" value="1">
-                    <button class="setting-btn" onclick="changeSetting('digits', -1)">▼</button>
                 </div>
             </div>
             <div class="setting-row">
                 <label>計算回数</label>
                 <div class="setting-control">
                     <input type="number" id="operations-setting" min="1" max="5" value="2">
-                    <button class="setting-btn" onclick="changeSetting('operations', -1)">▼</button>
                 </div>
             </div>
             <div class="setting-row">
