@@ -24,10 +24,9 @@ class SorobanGame {
     initializeEventListeners() {
         // タイトル画面のボタン
         document.getElementById('start-btn').addEventListener('click', () => this.startGame());
-        document.getElementById('customize-btn').addEventListener('click', () => this.showSettings());
-
-        // ゲーム画面のボタン
+        document.getElementById('customize-btn').addEventListener('click', () => this.showSettings());        // ゲーム画面のボタン
         document.getElementById('check-answer').addEventListener('click', () => this.checkAnswer());
+        document.getElementById('next-problem').addEventListener('click', () => this.nextProblem());
 
         // 結果画面のボタン
         document.getElementById('play-again-btn').addEventListener('click', () => this.startGame());
@@ -130,9 +129,7 @@ class SorobanGame {
 
         // 自動正解判定
         this.checkAutoAnswer();
-    }
-
-    checkAutoAnswer() {
+    }    checkAutoAnswer() {
         // ゲーム中でない場合は判定しない
         if (!this.gameState.startTime || !this.gameState.problems.length) {
             return;
@@ -141,6 +138,7 @@ class SorobanGame {
         const problem = this.gameState.problems[this.gameState.currentProblem];
         const feedback = document.getElementById('feedback');
         const checkButton = document.getElementById('check-answer');
+        const nextButton = document.getElementById('next-problem');
 
         // 正解と一致した場合
         if (this.gameState.abacusValue === problem.answer) {
@@ -158,13 +156,14 @@ class SorobanGame {
             const answerText = currentText.replace('?', `<span class="correct">${problem.answer}</span>`);
             equationElement.innerHTML = answerText;
 
-            // ボタンを無効化
-            checkButton.disabled = true;
+            // ボタンの表示を切り替え
+            checkButton.style.display = 'none';
+            nextButton.style.display = 'inline-block';
 
-            // 自動で次の問題に進む
-            setTimeout(() => {
+            // 自動進行タイマーを設定
+            this.autoNextTimer = setTimeout(() => {
                 this.nextProblem();
-            }, 2000);
+            }, 3000);
         }
     }
 
@@ -271,11 +270,11 @@ class SorobanGame {
 
         document.getElementById('current-equation').innerHTML = highlightedText;
         document.getElementById('problem-counter').textContent = `${this.gameState.currentProblem + 1}問目`;
-    }
-
-    checkAnswer() {
+    }    checkAnswer() {
         const problem = this.gameState.problems[this.gameState.currentProblem];
         const feedback = document.getElementById('feedback');
+        const checkButton = document.getElementById('check-answer');
+        const nextButton = document.getElementById('next-problem');
 
         if (this.gameState.abacusValue === problem.answer) {
             feedback.textContent = '正解！';
@@ -287,22 +286,32 @@ class SorobanGame {
             const answerText = currentText.replace('?', `<span class="correct">${problem.answer}</span>`);
             equationElement.innerHTML = answerText;
 
-            setTimeout(() => {
+            // ボタンの表示を切り替え
+            checkButton.style.display = 'none';
+            nextButton.style.display = 'inline-block';
+
+            this.autoNextTimer = setTimeout(() => {
                 this.nextProblem();
-            }, 2000);
+            }, 3000);
         } else {
             feedback.textContent = `不正解。正しい答え: ${problem.answer}`;
             feedback.className = 'feedback incorrect';
 
-            setTimeout(() => {
+            // ボタンの表示を切り替え
+            checkButton.style.display = 'none';
+            nextButton.style.display = 'inline-block';
+
+            this.autoNextTimer = setTimeout(() => {
                 this.nextProblem();
-            }, 3000);
+            }, 4000);
+        }
+    }    nextProblem() {
+        // 自動進行タイマーをクリア
+        if (this.autoNextTimer) {
+            clearTimeout(this.autoNextTimer);
+            this.autoNextTimer = null;
         }
 
-        document.getElementById('check-answer').disabled = true;
-    }
-
-    nextProblem() {
         this.gameState.currentProblem++;
 
         if (this.gameState.currentProblem >= this.settings.problems) {
@@ -311,11 +320,15 @@ class SorobanGame {
             this.gameState.currentStep = 0;
             this.resetAbacus();
             this.displayCurrentProblem();
+            
+            // フィードバックとボタンをリセット
             document.getElementById('feedback').textContent = '';
             document.getElementById('feedback').className = 'feedback';
+            document.getElementById('check-answer').style.display = 'inline-block';
             document.getElementById('check-answer').disabled = false;
+            document.getElementById('next-problem').style.display = 'none';
         }
-    } endGame() {
+    }endGame() {
         this.gameState.endTime = new Date();
         const totalTime = Math.floor((this.gameState.endTime - this.gameState.startTime) / 1000);
         const minutes = Math.floor(totalTime / 60);
@@ -342,13 +355,22 @@ class SorobanGame {
             bead.classList.remove('active');
         });
         this.gameState.abacusValue = 0;
-    }
-
-    resetFeedback() {
+    }    resetFeedback() {
         const feedback = document.getElementById('feedback');
+        const checkButton = document.getElementById('check-answer');
+        const nextButton = document.getElementById('next-problem');
+        
         feedback.textContent = '';
         feedback.className = 'feedback';
-        document.getElementById('check-answer').disabled = false;
+        checkButton.style.display = 'inline-block';
+        checkButton.disabled = false;
+        nextButton.style.display = 'none';
+        
+        // 自動進行タイマーをクリア
+        if (this.autoNextTimer) {
+            clearTimeout(this.autoNextTimer);
+            this.autoNextTimer = null;
+        }
     }
 
     startTimer() {

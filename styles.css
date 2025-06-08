@@ -253,6 +253,29 @@ body {
     transform: none;
 }
 
+.answer-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.next-button {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.next-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
 /* 結果画面 */
 .result-title {
     font-size: 3rem;
@@ -466,9 +489,19 @@ body {
     .bead {
         width: 28px;
         height: 14px;
+    }    .game-info {
+        font-size: 1rem;
     }
 
-    .game-info {
+    .answer-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .check-button,
+    .next-button {
         font-size: 1rem;
+        padding: 0.6rem 1.5rem;
+        min-width: 150px;
     }
 }
