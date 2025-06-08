@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>そろばん学習</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- タイトル画面 -->
+    <div id="title-screen" class="screen active">
+        <h1 class="title">そろばん</h1>
+        <div class="button-container">
+            <button id="start-btn" class="main-button">スタート</button>
+            <button id="customize-btn" class="main-button">カスタマイズ</button>
+        </div>
+        <div id="settings-display" class="settings-display">
+            問題数: <span id="display-problems">1</span>,
+            桁数: <span id="display-digits">2</span>,
+            計算回数: <span id="display-operations">2</span>,
+            計算式: <span id="display-type">足し算</span>
+        </div>
+    </div>
+
+    <!-- ゲーム画面 -->
+    <div id="game-screen" class="screen">
+        <div id="equation" class="equation">
+            <span id="current-equation">13 + 5 = ?</span>
+        </div>
+        <div id="abacus" class="abacus">
+            <!-- そろばんのレール -->
+            <div class="abacus-rail">
+                <div class="abacus-column" data-place="4">
+                    <div class="upper-beads">
+                        <div class="bead heaven-bead" data-value="5"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="lower-beads">
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                    </div>
+                </div>
+                <div class="abacus-column" data-place="3">
+                    <div class="upper-beads">
+                        <div class="bead heaven-bead" data-value="5"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="lower-beads">
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                    </div>
+                </div>
+                <div class="abacus-column" data-place="2">
+                    <div class="upper-beads">
+                        <div class="bead heaven-bead" data-value="5"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="lower-beads">
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                    </div>
+                </div>
+                <div class="abacus-column" data-place="1">
+                    <div class="upper-beads">
+                        <div class="bead heaven-bead" data-value="5"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="lower-beads">
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                    </div>
+                </div>
+                <div class="abacus-column" data-place="0">
+                    <div class="upper-beads">
+                        <div class="bead heaven-bead" data-value="5"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="lower-beads">
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                        <div class="bead earth-bead" data-value="1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="game-info" class="game-info">
+            <span id="problem-counter">1問目</span>
+            <span id="timer">タイム 0:00</span>
+        </div>
+        <div id="feedback" class="feedback"></div>
+        <button id="check-answer" class="check-button">答えを確認</button>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="result-screen" class="screen">
+        <h2 class="result-title">ゲームクリア</h2>
+        <div class="result-info">
+            <p>全<span id="total-problems">1</span>問クリア</p>
+            <p>総合タイム <span id="total-time">0:28</span></p>
+        </div>
+        <div class="button-container">
+            <button id="play-again-btn" class="main-button">もう一度</button>
+            <button id="back-to-title-btn" class="main-button">タイトルに戻る</button>
+        </div>
+    </div>
+
+    <!-- 設定画面 -->
+    <div id="settings-screen" class="screen">
+        <div class="settings-container">
+            <div class="setting-row">
+                <label>問題数</label>
+                <div class="setting-control">
+                    <input type="number" id="problems-setting" min="1" max="10" value="1">
+                    <button class="setting-btn" onclick="changeSetting('problems', -1)">▼</button>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label>桁数</label>
+                <div class="setting-control">
+                    <input type="number" id="digits-setting" min="1" max="3" value="2">
+                    <button class="setting-btn" onclick="changeSetting('digits', -1)">▼</button>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label>計算回数</label>
+                <div class="setting-control">
+                    <input type="number" id="operations-setting" min="1" max="5" value="2">
+                    <button class="setting-btn" onclick="changeSetting('operations', -1)">▼</button>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label>計算式</label>
+                <div class="operation-buttons">
+                    <button class="operation-btn active" data-operation="addition">足し算</button>
+                    <button class="operation-btn" data-operation="subtraction">引き算</button>
+                    <button class="operation-btn" data-operation="mixed">掛け算</button>
+                </div>
+            </div>
+            <div class="button-container">
+                <button id="default-btn" class="main-button">デフォルト</button>
+                <button id="back-to-title-settings-btn" class="main-button">タイトルに戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
