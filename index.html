@@ -100,14 +100,33 @@
         </div>
         <div id="feedback" class="feedback"></div>
         <button id="check-answer" class="check-button">答えを確認</button>
-    </div>
-
-    <!-- 結果画面 -->
+    </div> <!-- 結果画面 -->
     <div id="result-screen" class="screen">
         <h2 class="result-title">ゲームクリア</h2>
         <div class="result-info">
             <p>全<span id="total-problems">1</span>問クリア</p>
             <p>総合タイム <span id="total-time">0:28</span></p>
+        </div>
+        <div class="game-settings-info">
+            <h3>ゲーム設定</h3>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <span class="setting-label">問題数:</span>
+                    <span id="result-problems" class="setting-value">3</span>問
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">桁数:</span>
+                    <span id="result-digits" class="setting-value">1</span>桁
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">計算回数:</span>
+                    <span id="result-operations" class="setting-value">2</span>回
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">計算式:</span>
+                    <span id="result-type" class="setting-value">足し算</span>
+                </div>
+            </div>
         </div>
         <div class="button-container">
             <button id="play-again-btn" class="main-button">もう一度</button>

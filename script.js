@@ -315,9 +315,7 @@ class SorobanGame {
             document.getElementById('feedback').className = 'feedback';
             document.getElementById('check-answer').disabled = false;
         }
-    }
-
-    endGame() {
+    } endGame() {
         this.gameState.endTime = new Date();
         const totalTime = Math.floor((this.gameState.endTime - this.gameState.startTime) / 1000);
         const minutes = Math.floor(totalTime / 60);
@@ -325,6 +323,18 @@ class SorobanGame {
 
         document.getElementById('total-problems').textContent = this.settings.problems;
         document.getElementById('total-time').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        // 設定情報を結果画面に表示
+        document.getElementById('result-problems').textContent = this.settings.problems;
+        document.getElementById('result-digits').textContent = this.settings.digits;
+        document.getElementById('result-operations').textContent = this.settings.operations;
+
+        const typeText = {
+            'addition': '足し算',
+            'subtraction': '引き算',
+            'mixed': '混合'
+        };
+        document.getElementById('result-type').textContent = typeText[this.settings.type];
 
         this.showResultScreen();
     } resetAbacus() {
