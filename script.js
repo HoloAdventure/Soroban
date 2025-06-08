@@ -105,10 +105,10 @@ class SorobanGame {
                     earthBeads[i].classList.add('active');
                 }
             }
-        }
+        } this.calculateAbacusValue();
+    }
 
-        this.calculateAbacusValue();
-    } calculateAbacusValue() {
+    calculateAbacusValue() {
         let total = 0;
         const columns = document.querySelectorAll('.abacus-column');
 
@@ -125,11 +125,19 @@ class SorobanGame {
             // 地珠の値
             const activeEarthBeads = column.querySelectorAll('.earth-bead.active').length;
             total += activeEarthBeads * placeValue;
-        }); this.gameState.abacusValue = total;
+        });
+
+        this.gameState.abacusValue = total;
+
+        // 現在のステップを更新
+        this.updateCurrentStep();
+
+        // 問題表示を更新
+        this.displayCurrentProblem();
 
         // 自動正解判定
         this.checkAutoAnswer();
-    }    checkAutoAnswer() {
+    } checkAutoAnswer() {
         // ゲーム中でない場合は判定しない
         if (!this.gameState.startTime || !this.gameState.problems.length) {
             return;
@@ -245,23 +253,26 @@ class SorobanGame {
             }
         }
 
-        equationText += ' = ?';
-
-        // 現在のステップをハイライト
+        equationText += ' = ?';        // 現在のステップをハイライト
         const steps = problem.steps;
         let highlightedText = '';
 
         for (let i = 0; i < steps.length; i++) {
             const step = steps[i];
-            const isHighlighted = i === this.gameState.currentStep;
+            const isCurrentStep = i === this.gameState.currentStep;
+            const isCompletedStep = i < this.gameState.currentStep;
 
             if (i === 0) {
-                highlightedText += isHighlighted ?
-                    `<span class="highlight">${step.value}</span>` :
-                    step.value;
+                if (isCurrentStep) {
+                    highlightedText += `<span class="highlight">${step.value}</span>`;
+                } else if (isCompletedStep) {
+                    highlightedText += `<span class="completed">${step.value}</span>`;
+                } else {
+                    highlightedText += step.value;
+                }
             } else {
-                const operationClass = isHighlighted ? 'highlight' : '';
-                const valueClass = isHighlighted ? 'highlight' : '';
+                const operationClass = isCurrentStep ? 'highlight' : (isCompletedStep ? 'completed' : '');
+                const valueClass = isCurrentStep ? 'highlight' : (isCompletedStep ? 'completed' : '');
                 highlightedText += ` <span class="${operationClass}">${step.operation}</span> <span class="${valueClass}">${step.value}</span>`;
             }
         }
@@ -270,7 +281,7 @@ class SorobanGame {
 
         document.getElementById('current-equation').innerHTML = highlightedText;
         document.getElementById('problem-counter').textContent = `${this.gameState.currentProblem + 1}問目`;
-    }    checkAnswer() {
+    } checkAnswer() {
         const problem = this.gameState.problems[this.gameState.currentProblem];
         const feedback = document.getElementById('feedback');
         const checkButton = document.getElementById('check-answer');
@@ -305,7 +316,7 @@ class SorobanGame {
                 this.nextProblem();
             }, 4000);
         }
-    }    nextProblem() {
+    } nextProblem() {
         // 自動進行タイマーをクリア
         if (this.autoNextTimer) {
             clearTimeout(this.autoNextTimer);
@@ -320,7 +331,7 @@ class SorobanGame {
             this.gameState.currentStep = 0;
             this.resetAbacus();
             this.displayCurrentProblem();
-            
+
             // フィードバックとボタンをリセット
             document.getElementById('feedback').textContent = '';
             document.getElementById('feedback').className = 'feedback';
@@ -328,7 +339,7 @@ class SorobanGame {
             document.getElementById('check-answer').disabled = false;
             document.getElementById('next-problem').style.display = 'none';
         }
-    }endGame() {
+    } endGame() {
         this.gameState.endTime = new Date();
         const totalTime = Math.floor((this.gameState.endTime - this.gameState.startTime) / 1000);
         const minutes = Math.floor(totalTime / 60);
@@ -355,17 +366,17 @@ class SorobanGame {
             bead.classList.remove('active');
         });
         this.gameState.abacusValue = 0;
-    }    resetFeedback() {
+    } resetFeedback() {
         const feedback = document.getElementById('feedback');
         const checkButton = document.getElementById('check-answer');
         const nextButton = document.getElementById('next-problem');
-        
+
         feedback.textContent = '';
         feedback.className = 'feedback';
         checkButton.style.display = 'inline-block';
         checkButton.disabled = false;
         nextButton.style.display = 'none';
-        
+
         // 自動進行タイマーをクリア
         if (this.autoNextTimer) {
             clearTimeout(this.autoNextTimer);
@@ -453,6 +464,53 @@ class SorobanGame {
         };
         this.loadSettingsToForm();
         this.updateSettingsDisplay();
+    }
+
+    updateCurrentStep() {
+        // ゲーム中でない場合は処理しない
+        if (!this.gameState.startTime || !this.gameState.problems.length) {
+            return;
+        }
+
+        const problem = this.gameState.problems[this.gameState.currentProblem];
+        const currentValue = this.gameState.abacusValue;
+
+        // 各ステップまでの計算結果を求める
+        let calculatedValue = 0;
+        let currentStep = 0;
+
+        for (let i = 0; i < problem.steps.length; i++) {
+            const step = problem.steps[i];
+
+            if (i === 0) {
+                calculatedValue = step.value;
+            } else {
+                if (step.operation === '+') {
+                    calculatedValue += step.value;
+                } else if (step.operation === '-') {
+                    calculatedValue -= step.value;
+                    if (calculatedValue < 0) {
+                        calculatedValue = Math.abs(calculatedValue);
+                    }
+                }
+            }
+
+            // そろばんの値と一致する場合、そのステップまで進んでいる
+            if (currentValue === calculatedValue) {
+                currentStep = i + 1; // 0ステップが正解している場合は次のステップに進む
+                break;
+            }
+        }
+
+        // 最終的な答えと一致する場合は、最後のステップとする
+        if (currentValue === problem.answer) {
+            currentStep = problem.steps.length;
+        }
+
+        // ステップ数は戻らないので現在のステップ数を超えた場合のみ更新する
+        if (currentStep > this.gameState.currentStep) {
+            this.gameState.currentStep = currentStep;
+        }
     }
 }
 

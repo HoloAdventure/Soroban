@@ -122,6 +122,11 @@ body {
     color: #ffeb3b;
 }
 
+.equation .completed {
+    color: #4caf50;
+    text-decoration: line-through;
+}
+
 .equation .correct {
     color: #ff5722;
 }
@@ -489,7 +494,9 @@ body {
     .bead {
         width: 28px;
         height: 14px;
-    }    .game-info {
+    }
+
+    .game-info {
         font-size: 1rem;
     }
 
