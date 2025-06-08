@@ -92,7 +92,7 @@ class SorobanGame {
             if (bead.classList.contains('active')) {
                 // 珠を非アクティブにする
                 bead.classList.remove('active');
-                // この珠より上の珠も非アクティブにする
+                // この珠より下の珠も非アクティブにする
                 let foundBead = false;
                 earthBeads.forEach(eb => {
                     if (eb === bead) foundBead = true;
@@ -100,9 +100,9 @@ class SorobanGame {
                 });
             } else {
                 // 珠をアクティブにする
-                // この珠から下の珠まで（含む）をアクティブにする
+                // この珠まで（含む）の珠をアクティブにする
                 let beadIndex = Array.from(earthBeads).indexOf(bead);
-                for (let i = beadIndex; i < earthBeads.length; i++) {
+                for (let i = 0; i <= beadIndex; i++) {
                     earthBeads[i].classList.add('active');
                 }
             }
