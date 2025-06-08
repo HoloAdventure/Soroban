@@ -83,7 +83,8 @@ class SorobanGame {
         if (isHeavenBead) {
             // 天珠（5の珠）の処理
             const heavenBead = column.querySelector('.heaven-bead');
-            heavenBead.classList.toggle('active');        } else {
+            heavenBead.classList.toggle('active');
+        } else {
             // 地珠（1の珠）の処理
             const earthBeads = column.querySelectorAll('.earth-bead');
             const activeEarthBeads = column.querySelectorAll('.earth-bead.active').length;
@@ -185,14 +186,13 @@ class SorobanGame {
         }
 
         return problem;
-    }
-
-    startGame() {
+    } startGame() {
         this.generateProblems();
         this.gameState.currentProblem = 0;
         this.gameState.currentStep = 0;
         this.gameState.startTime = new Date();
         this.resetAbacus();
+        this.resetFeedback();
         this.showGameScreen();
         this.displayCurrentProblem();
         this.startTimer();
@@ -292,13 +292,18 @@ class SorobanGame {
         document.getElementById('total-time').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
         this.showResultScreen();
-    }
-
-    resetAbacus() {
+    } resetAbacus() {
         document.querySelectorAll('.bead').forEach(bead => {
             bead.classList.remove('active');
         });
         this.gameState.abacusValue = 0;
+    }
+
+    resetFeedback() {
+        const feedback = document.getElementById('feedback');
+        feedback.textContent = '';
+        feedback.className = 'feedback';
+        document.getElementById('check-answer').disabled = false;
     }
 
     startTimer() {
