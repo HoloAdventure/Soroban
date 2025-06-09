@@ -134,15 +134,15 @@ body {
 /* そろばん */
 .abacus {
     background-color: #888;
-    padding: 20px;
-    border-radius: 10px;
-    border: 4px solid #555;
+    padding: 30px;
+    border-radius: 15px;
+    border: 6px solid #555;
     margin-bottom: 2rem;
 }
 
 .abacus-rail {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
 }
 
@@ -150,7 +150,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50px;
+    width: 75px;
 }
 
 .upper-beads,
@@ -158,36 +158,36 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 7px;
 }
 
 .upper-beads {
-    height: 60px;
+    height: 90px;
     justify-content: flex-end;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
 }
 
 .lower-beads {
-    height: 120px;
+    height: 180px;
     justify-content: flex-start;
-    padding-top: 10px;
+    padding-top: 15px;
 }
 
 .divider {
-    height: 4px;
+    height: 6px;
     width: 100%;
     background-color: #444;
-    margin: 5px 0;
+    margin: 7px 0;
 }
 
 .bead {
-    width: 40px;
-    height: 20px;
+    width: 60px;
+    height: 30px;
     background-color: #f0f0f0;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.2s;
-    border: 2px solid #ddd;
+    border: 3px solid #ddd;
 }
 
 .bead:hover {
