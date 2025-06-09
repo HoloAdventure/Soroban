@@ -182,9 +182,7 @@ class SorobanGame {
             const problem = this.generateSingleProblem();
             this.gameState.problems.push(problem);
         }
-    }
-
-    generateSingleProblem() {
+    }    generateSingleProblem() {
         const maxNum = Math.pow(10, this.settings.digits) - 1;
         const minNum = Math.pow(10, this.settings.digits - 1);
 
@@ -200,26 +198,51 @@ class SorobanGame {
 
         // 追加の計算
         for (let i = 0; i < this.settings.operations - 1; i++) {
-            const num = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+            let num;
             let operation;
 
             if (this.settings.type === 'addition') {
+                num = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
                 operation = '+';
                 problem.answer += num;
             } else if (this.settings.type === 'subtraction') {
                 operation = '-';
-                problem.answer -= num;
-                if (problem.answer < 0) {
-                    problem.answer = Math.abs(problem.answer);
+                // 引き算の場合、現在の答えから引いても1以上になる数値を選択
+                const maxSubtractable = problem.answer - 1;
+                if (maxSubtractable >= 1) {
+                    // 引ける範囲で数値を生成
+                    const subtractMax = Math.min(maxSubtractable, maxNum);
+                    const subtractMin = Math.min(minNum, subtractMax);
+                    num = Math.floor(Math.random() * (subtractMax - subtractMin + 1)) + subtractMin;
+                } else {
+                    // 引くと1未満になってしまう場合は、足し算に変更
+                    operation = '+';
+                    num = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+                }
+                
+                if (operation === '-') {
+                    problem.answer -= num;
+                } else {
+                    problem.answer += num;
                 }
             } else {
                 operation = Math.random() < 0.5 ? '+' : '-';
                 if (operation === '+') {
+                    num = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
                     problem.answer += num;
                 } else {
-                    problem.answer -= num;
-                    if (problem.answer < 0) {
-                        problem.answer = Math.abs(problem.answer);
+                    // 混合の場合も引き算で1以上を保証
+                    const maxSubtractable = problem.answer - 1;
+                    if (maxSubtractable >= 1) {
+                        const subtractMax = Math.min(maxSubtractable, maxNum);
+                        const subtractMin = Math.min(minNum, subtractMax);
+                        num = Math.floor(Math.random() * (subtractMax - subtractMin + 1)) + subtractMin;
+                        problem.answer -= num;
+                    } else {
+                        // 引くと1未満になる場合は足し算に変更
+                        operation = '+';
+                        num = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+                        problem.answer += num;
                     }
                 }
             }
@@ -228,7 +251,7 @@ class SorobanGame {
         }
 
         return problem;
-    } startGame() {
+    }startGame() {
         this.generateProblems();
         this.gameState.currentProblem = 0;
         this.gameState.currentStep = 0;
@@ -464,9 +487,7 @@ class SorobanGame {
         };
         this.loadSettingsToForm();
         this.updateSettingsDisplay();
-    }
-
-    updateCurrentStep() {
+    }    updateCurrentStep() {
         // ゲーム中でない場合は処理しない
         if (!this.gameState.startTime || !this.gameState.problems.length) {
             return;
@@ -489,8 +510,9 @@ class SorobanGame {
                     calculatedValue += step.value;
                 } else if (step.operation === '-') {
                     calculatedValue -= step.value;
-                    if (calculatedValue < 0) {
-                        calculatedValue = Math.abs(calculatedValue);
+                    // 計算結果が負になることは問題生成時に防いでいるが、念のため
+                    if (calculatedValue < 1) {
+                        calculatedValue = 1;
                     }
                 }
             }
