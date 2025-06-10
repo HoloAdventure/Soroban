@@ -138,6 +138,12 @@ body {
     border-radius: 15px;
     border: 6px solid #555;
     margin-bottom: 2rem;
+    /* マルチタッチ対応 */
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .abacus-rail {
@@ -188,6 +194,12 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     border: 3px solid #ddd;
+    /* タッチ操作の最適化 */
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .bead:hover {

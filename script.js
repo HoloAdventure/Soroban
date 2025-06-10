@@ -64,13 +64,48 @@ class SorobanGame {
 
         // そろばんの珠クリック
         this.initializeAbacus();
-    }
-
-    initializeAbacus() {
+    } initializeAbacus() {
         const beads = document.querySelectorAll('.bead');
         beads.forEach(bead => {
+            // マウスクリックイベント
             bead.addEventListener('click', () => this.toggleBead(bead));
+
+            // タッチイベント（マルチタッチ対応）
+            bead.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // デフォルトのタッチ動作を防ぐ
+                this.toggleBead(bead);
+            });
+
+            // タッチ移動中のイベント（珠をドラッグしても反応）
+            bead.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                // タッチ位置の要素を取得
+                const touch = e.touches[0];
+                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (element && element.classList.contains('bead') && element !== bead) {
+                    this.toggleBead(element);
+                }
+            });
         });
+
+        // マルチタッチ用の追加設定
+        const abacus = document.getElementById('abacus');
+        if (abacus) {
+            // タッチイベントの設定
+            abacus.style.touchAction = 'none'; // ブラウザのデフォルトタッチ動作を無効化
+
+            // 複数タッチポイントでの同時操作
+            abacus.addEventListener('touchstart', (e) => {
+                // 複数のタッチポイントを処理
+                Array.from(e.touches).forEach(touch => {
+                    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                    if (element && element.classList.contains('bead')) {
+                        // 少し遅延を入れて同時タップを確実に処理
+                        setTimeout(() => this.toggleBead(element), 10);
+                    }
+                });
+            });
+        }
     }
 
     toggleBead(bead) {
@@ -182,7 +217,7 @@ class SorobanGame {
             const problem = this.generateSingleProblem();
             this.gameState.problems.push(problem);
         }
-    }    generateSingleProblem() {
+    } generateSingleProblem() {
         const maxNum = Math.pow(10, this.settings.digits) - 1;
         const minNum = Math.pow(10, this.settings.digits - 1);
 
@@ -219,7 +254,7 @@ class SorobanGame {
                     operation = '+';
                     num = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
                 }
-                
+
                 if (operation === '-') {
                     problem.answer -= num;
                 } else {
@@ -251,7 +286,7 @@ class SorobanGame {
         }
 
         return problem;
-    }startGame() {
+    } startGame() {
         this.generateProblems();
         this.gameState.currentProblem = 0;
         this.gameState.currentStep = 0;
@@ -487,7 +522,7 @@ class SorobanGame {
         };
         this.loadSettingsToForm();
         this.updateSettingsDisplay();
-    }    updateCurrentStep() {
+    } updateCurrentStep() {
         // ゲーム中でない場合は処理しない
         if (!this.gameState.startTime || !this.gameState.problems.length) {
             return;
