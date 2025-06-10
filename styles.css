@@ -142,9 +142,9 @@ body {
 /* そろばん */
 .abacus {
     background-color: #888;
-    padding: 30px;
-    border-radius: 15px;
-    border: 6px solid #555;
+    padding: 50px;
+    border-radius: 25px;
+    border: 10px solid #555;
     margin-bottom: 2rem;
     /* マルチタッチ対応 */
     touch-action: none;
@@ -156,7 +156,7 @@ body {
 
 .abacus-rail {
     display: flex;
-    gap: 15px;
+    gap: 25px;
     justify-content: center;
 }
 
@@ -164,7 +164,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 75px;
+    width: 125px;
 }
 
 .upper-beads,
@@ -172,36 +172,36 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
+    gap: 12px;
 }
 
 .upper-beads {
-    height: 90px;
+    height: 150px;
     justify-content: flex-end;
-    padding-bottom: 15px;
+    padding-bottom: 25px;
 }
 
 .lower-beads {
-    height: 180px;
+    height: 300px;
     justify-content: flex-start;
-    padding-top: 15px;
+    padding-top: 25px;
 }
 
 .divider {
-    height: 6px;
+    height: 10px;
     width: 100%;
     background-color: #444;
-    margin: 7px 0;
+    margin: 12px 0;
 }
 
 .bead {
-    width: 60px;
-    height: 30px;
+    width: 100px;
+    height: 50px;
     background-color: #f0f0f0;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.2s;
-    border: 3px solid #ddd;
+    border: 5px solid #ddd;
     /* タッチ操作の最適化 */
     touch-action: manipulation;
     user-select: none;
@@ -477,19 +477,17 @@ body {
     .title-settings-info .settings-grid {
         grid-template-columns: 1fr;
         gap: 0.8rem;
-    }
-
-    .title-settings-info .setting-item {
+    }    .title-settings-info .setting-item {
         padding: 0.6rem;
     }
 
     .abacus-column {
-        width: 40px;
+        width: 75px;
     }
 
     .bead {
-        width: 32px;
-        height: 16px;
+        width: 62px;
+        height: 31px;
     }
 
     .settings-display {
@@ -509,19 +507,17 @@ body {
 
     .equation {
         font-size: 1.5rem;
-    }
-
-    .abacus-rail {
-        gap: 5px;
+    }    .abacus-rail {
+        gap: 10px;
     }
 
     .abacus-column {
-        width: 35px;
+        width: 62px;
     }
 
     .bead {
-        width: 28px;
-        height: 14px;
+        width: 50px;
+        height: 25px;
     }
 
     .game-info {
