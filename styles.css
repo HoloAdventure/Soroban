@@ -32,16 +32,8 @@ body {
 .title {
     font-size: 4rem;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
     text-align: center;
-}
-
-.version {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
-    text-align: center;
-    margin-bottom: 2rem;
-    font-weight: 300;
 }
 
 .button-container {
@@ -142,21 +134,15 @@ body {
 /* そろばん */
 .abacus {
     background-color: #888;
-    padding: 50px;
-    border-radius: 25px;
-    border: 10px solid #555;
+    padding: 30px;
+    border-radius: 15px;
+    border: 6px solid #555;
     margin-bottom: 2rem;
-    /* マルチタッチ対応 */
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 .abacus-rail {
     display: flex;
-    gap: 25px;
+    gap: 15px;
     justify-content: center;
 }
 
@@ -164,7 +150,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 125px;
+    width: 75px;
 }
 
 .upper-beads,
@@ -172,42 +158,36 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 7px;
 }
 
 .upper-beads {
-    height: 150px;
+    height: 90px;
     justify-content: flex-end;
-    padding-bottom: 25px;
+    padding-bottom: 15px;
 }
 
 .lower-beads {
-    height: 300px;
+    height: 180px;
     justify-content: flex-start;
-    padding-top: 25px;
+    padding-top: 15px;
 }
 
 .divider {
-    height: 10px;
+    height: 6px;
     width: 100%;
     background-color: #444;
-    margin: 12px 0;
+    margin: 7px 0;
 }
 
 .bead {
-    width: 100px;
-    height: 50px;
+    width: 60px;
+    height: 30px;
     background-color: #f0f0f0;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.2s;
-    border: 5px solid #ddd;
-    /* タッチ操作の最適化 */
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
+    border: 3px solid #ddd;
 }
 
 .bead:hover {
@@ -437,10 +417,6 @@ body {
         font-size: 3rem;
     }
 
-    .version {
-        font-size: 1rem;
-    }
-
     .equation {
         font-size: 2rem;
     }
@@ -472,7 +448,9 @@ body {
     .title-settings-info {
         padding: 1rem;
         margin-top: 1.5rem;
-    }    .title-settings-info .settings-grid {
+    }
+
+    .title-settings-info .settings-grid {
         grid-template-columns: 1fr;
         gap: 0.8rem;
     }
@@ -481,42 +459,13 @@ body {
         padding: 0.6rem;
     }
 
-    /* スマートフォン向けそろばんサイズ（元サイズに戻す） */
-    .abacus {
-        padding: 20px;
-        border-radius: 10px;
-        border: 4px solid #555;
-    }
-
-    .abacus-rail {
-        gap: 10px;
-    }
-
     .abacus-column {
-        width: 50px;
-    }
-
-    .upper-beads {
-        height: 60px;
-        padding-bottom: 10px;
-        gap: 5px;
-    }
-
-    .lower-beads {
-        height: 120px;
-        padding-top: 10px;
-        gap: 5px;
-    }
-
-    .divider {
-        height: 4px;
-        margin: 5px 0;
+        width: 40px;
     }
 
     .bead {
-        width: 40px;
-        height: 20px;
-        border: 2px solid #ddd;
+        width: 32px;
+        height: 16px;
     }
 
     .settings-display {
@@ -530,48 +479,21 @@ body {
         font-size: 2.5rem;
     }
 
-    .version {
-        font-size: 0.9rem;
-    }    .equation {
+    .equation {
         font-size: 1.5rem;
     }
 
-    /* 小型スマートフォン向けそろばんサイズ */
-    .abacus {
-        padding: 15px;
-        border-radius: 8px;
-        border: 3px solid #555;
-    }
-
     .abacus-rail {
-        gap: 8px;
+        gap: 5px;
     }
 
     .abacus-column {
         width: 35px;
     }
 
-    .upper-beads {
-        height: 45px;
-        padding-bottom: 8px;
-        gap: 3px;
-    }
-
-    .lower-beads {
-        height: 90px;
-        padding-top: 8px;
-        gap: 3px;
-    }
-
-    .divider {
-        height: 3px;
-        margin: 3px 0;
-    }
-
     .bead {
-        width: 32px;
-        height: 16px;
-        border: 2px solid #ddd;
+        width: 28px;
+        height: 14px;
     }
 
     .game-info {
